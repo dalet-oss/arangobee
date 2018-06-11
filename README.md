@@ -1,16 +1,16 @@
-![mongobee](https://raw.githubusercontent.com/mongobee/mongobee/master/misc/mongobee_min.png)
+![arangobee](https://raw.githubusercontent.com/cmoine/arangobee/master/misc/arangobee_min.png)
 
-[![Build Status](https://travis-ci.org/mongobee/mongobee.svg?branch=master)](https://travis-ci.org/mongobee/mongobee) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2721/badge.svg)](https://scan.coverity.com/projects/2721) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mongobee/mongobee/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mongobee/mongobee) [![Licence](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/mongobee/mongobee/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/cmoine/arangobee.svg?branch=master)](https://travis-ci.org/cmoine/arangobee) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2721/badge.svg)](https://scan.coverity.com/projects/2721) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cmoine/arangobee/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.cmoine/arangobee) [![Licence](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/cmoine/arangobee/blob/master/LICENSE)
 ---
 
 
-**mongobee** is a Java tool which helps you to *manage changes* in your MongoDB and *synchronize* them with your application.
+**arangobee** is a Java tool which helps you to *manage changes* in your MongoDB and *synchronize* them with your application.
 The concept is very similar to other db migration tools such as [Liquibase](http://www.liquibase.org) or [Flyway](http://flywaydb.org) but *without using XML/JSON/YML files*.
 
 The goal is to keep this tool simple and comfortable to use.
 
 
-**mongobee** provides new approach for adding changes (change sets) based on Java classes and methods with appropriate annotations.
+**arangobee** provides new approach for adding changes (change sets) based on Java classes and methods with appropriate annotations.
 
 ## Getting started
 
@@ -19,27 +19,27 @@ The goal is to keep this tool simple and comfortable to use.
 With Maven
 ```xml
 <dependency>
-  <groupId>com.github.mongobee</groupId>
-  <artifactId>mongobee</artifactId>
+  <groupId>com.github.arangobee</groupId>
+  <artifactId>arangobee</artifactId>
   <version>0.13</version>
 </dependency>
 ```
 With Gradle
 ```groovy
 compile 'org.javassist:javassist:3.18.2-GA' // workaround for ${javassist.version} placeholder issue*
-compile 'com.github.mongobee:mongobee:0.13'
+compile 'com.github.arangobee:arangobee:0.13'
 ```
 
 ### Usage with Spring
 
-You need to instantiate Mongobee object and provide some configuration.
+You need to instantiate arangobee object and provide some configuration.
 If you use Spring can be instantiated as a singleton bean in the Spring context. 
 In this case the migration process will be executed automatically on startup.
 
 ```java
 @Bean
-public Mongobee mongobee(){
-  Mongobee runner = new Mongobee("mongodb://YOUR_DB_HOST:27017/DB_NAME");
+public arangobee arangobee(){
+  arangobee runner = new arangobee("mongodb://YOUR_DB_HOST:27017/DB_NAME");
   runner.setDbName("yourDbName");         // host must be set if not set in URI
   runner.setChangeLogsScanPackage(
        "com.example.yourapp.changelogs"); // the package to be scanned for changesets
@@ -50,10 +50,10 @@ public Mongobee mongobee(){
 
 
 ### Usage without Spring
-Using mongobee without a spring context has similar configuration but you have to remember to run `execute()` method to start a migration process.
+Using arangobee without a spring context has similar configuration but you have to remember to run `execute()` method to start a migration process.
 
 ```java
-Mongobee runner = new Mongobee("mongodb://YOUR_DB_HOST:27017/DB_NAME");
+arangobee runner = new arangobee("mongodb://YOUR_DB_HOST:27017/DB_NAME");
 runner.setDbName("yourDbName");         // host must be set if not set in URI
 runner.setChangeLogsScanPackage(
      "com.example.yourapp.changelogs"); // package to scan for changesets
@@ -61,11 +61,11 @@ runner.setChangeLogsScanPackage(
 runner.execute();         //  ------> starts migration changesets
 ```
 
-Above examples provide minimal configuration. `Mongobee` object provides some other possibilities (setters) to make the tool more flexible:
+Above examples provide minimal configuration. `arangobee` object provides some other possibilities (setters) to make the tool more flexible:
 
 ```java
 runner.setChangelogCollectionName(logColName);   // default is dbchangelog, collection with applied change sets
-runner.setLockCollectionName(lockColName);       // default is mongobeelock, collection used during migration process
+runner.setLockCollectionName(lockColName);       // default is arangobeelock, collection used during migration process
 runner.setEnabled(shouldBeEnabled);              // default is true, migration won't start if set to false
 ```
 
@@ -174,7 +174,7 @@ public void someChange5(MongoTemplate mongoTemplate, Environment environment) {
 
 ### Using Spring profiles
      
-**mongobee** accepts Spring's `org.springframework.context.annotation.Profile` annotation. If a change log or change set class is annotated  with `@Profile`, 
+**arangobee** accepts Spring's `org.springframework.context.annotation.Profile` annotation. If a change log or change set class is annotated  with `@Profile`, 
 then it is activated for current application profiles.
 
 _Example 1_: annotated change set will be invoked for a `dev` profile
@@ -203,8 +203,8 @@ To enable the `@Profile` integration, please inject `org.springframework.core.en
 
 ```java      
 @Bean @Autowired
-public Mongobee mongobee(Environment environment) {
-  Mongobee runner = new Mongobee(uri);
+public arangobee arangobee(Environment environment) {
+  arangobee runner = new arangobee(uri);
   runner.setSpringEnvironment(environment)
   //... etc
 }
@@ -214,7 +214,7 @@ public Mongobee mongobee(Environment environment) {
 
 ##### Mongo java driver conflicts
 
-**mongobee** depends on `mongo-java-driver`. If your application has mongo-java-driver dependency too, there could be a library conflicts in some cases.
+**arangobee** depends on `mongo-java-driver`. If your application has mongo-java-driver dependency too, there could be a library conflicts in some cases.
 
 **Exception**:
 ```
@@ -225,7 +225,7 @@ com.mongodb.WriteConcernException: { "serverUsed" : "localhost" ,
 
 **Workaround**:
 
-You can exclude mongo-java-driver from **mongobee**  and use your dependency only. Maven example (pom.xml) below:
+You can exclude mongo-java-driver from **arangobee**  and use your dependency only. Maven example (pom.xml) below:
 ```xml
 <dependency>
     <groupId>org.mongodb</groupId>
@@ -234,8 +234,8 @@ You can exclude mongo-java-driver from **mongobee**  and use your dependency onl
 </dependency>
 
 <dependency>
-  <groupId>com.github.mongobee</groupId>
-  <artifactId>mongobee</artifactId>
+  <groupId>com.github.arangobee</groupId>
+  <artifactId>arangobee</artifactId>
   <version>0.9</version>
   <exclusions>
     <exclusion>

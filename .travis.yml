@@ -10,9 +10,9 @@ env:
 addons:
   coverity_scan:
     project:
-      name: "mongobee/mongobee"
+      name: "cmoine/arangobee"
       description: "Build submitted via Travis CI"
-    notification_email: stolowski@wp.pl
+    notification_email: christophe.moine@free.fr
     build_command_prepend: "mvn clean"
     build_command:   "mvn -DskipTests=true compile"
     branch_pattern: master
