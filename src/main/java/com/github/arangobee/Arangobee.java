@@ -240,12 +240,12 @@ public class Arangobee implements InitializingBean {
     } else if (changeSetMethod.getParameterTypes().length == 1
         && changeSetMethod.getParameterTypes()[0].equals(ArangoDatabase.class)) {
       logger.debug("method with DB argument");
-
+	
       return changeSetMethod.invoke(changeLogInstance, arangoDatabase);
-//    } else if (changeSetMethod.getParameterTypes().length == 0) {
-//      logger.debug("method with no params");
-//
-//      return changeSetMethod.invoke(changeLogInstance);
+    } else if (changeSetMethod.getParameterTypes().length == 0) {
+    	logger.debug("method with no params");
+
+    	return changeSetMethod.invoke(changeLogInstance);
     } else {
       throw new ArangobeeChangeSetException("ChangeSet method " + changeSetMethod.getName() +
           " has wrong arguments list. Please see docs for more info!");

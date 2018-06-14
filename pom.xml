@@ -3,13 +3,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>mongobee</name>
-    <description>MongoDB data migration tool for Java</description>
+    <name>arangobee</name>
+    <description>ArangoDB data migration tool for Java</description>
     <url>https://github.com/cmoine/arangobee</url>
 
-    <groupId>com.github.mongobee</groupId>
+    <groupId>io.github.cmoine</groupId>
     <artifactId>arangobee</artifactId>
-    <version>0.14-SNAPSHOT</version>
+    <version>0.14</version>
 
     <licenses>
         <license>
@@ -20,7 +20,7 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:mcmoine/arangobee.git</connection>
+        <connection>scm:git:git@github.com:cmoine/arangobee.git</connection>
         <developerConnection>scm:git:git@github.com:cmoine/arangobee.git</developerConnection>
         <url>git@github.com:cmoine/arangobee.git</url>
     </scm>
@@ -50,11 +50,6 @@
     </properties>
 
     <dependencies>
-        <!-- <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.3.0</version>
-        </dependency> -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -70,11 +65,6 @@
             <artifactId>reflections</artifactId>
             <version>0.9.9</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>org.jongo</groupId>
-            <artifactId>jongo</artifactId>
-            <version>1.3.0</version>
-        </dependency> -->
         <dependency>
             <groupId>com.arangodb</groupId>
             <artifactId>arangodb-spring-data</artifactId>
