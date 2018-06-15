@@ -1,5 +1,6 @@
 package com.github.arangobee;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -50,9 +51,9 @@ public class ArangobeeProfileTest {
 //    runner.setDbName("mongobeetest");
 //    runner.setEnabled(true);
 //  } // TODO code duplication
-//
-//  @Test
-//  public void shouldRunDevProfileAndNonAnnotated() throws Exception {
+
+  @Test
+  public void shouldRunDevProfileAndNonAnnotated() throws Exception {
 //    // given
 //    runner.setSpringEnvironment(new EnvironmentMock("dev", "test"));
 //    runner.setChangeLogsScanPackage(ProfiledDevChangeLog.class.getPackage().getName());
@@ -79,10 +80,10 @@ public class ArangobeeProfileTest {
 //            .append(ChangeEntry.KEY_CHANGEID, "Pdev3")
 //            .append(ChangeEntry.KEY_AUTHOR, "testuser"));
 //    assertEquals(0, change3);  //  @Profile("default")  should not match
-//  }
-//
-//  @Test
-//  public void shouldRunUnprofiledChangeLog() throws Exception {
+  }
+
+  @Test
+  public void shouldRunUnprofiledChangeLog() throws Exception {
 //    // given
 //    runner.setSpringEnvironment(new EnvironmentMock("test"));
 //    runner.setChangeLogsScanPackage(UnProfiledChangeLog.class.getPackage().getName());
@@ -121,10 +122,10 @@ public class ArangobeeProfileTest {
 //            .append(ChangeEntry.KEY_CHANGEID, "Pdev5")
 //            .append(ChangeEntry.KEY_AUTHOR, "testuser"));
 //    assertEquals(1, change5);  //  @Profile("!pro")  should match
-//  }
-//
-//  @Test
-//  public void shouldNotRunAnyChangeSet() throws Exception {
+  }
+
+  @Test
+  public void shouldNotRunAnyChangeSet() throws Exception {
 //    // given
 //    runner.setSpringEnvironment(new EnvironmentMock("foobar"));
 //    runner.setChangeLogsScanPackage(ProfiledDevChangeLog.class.getPackage().getName());
@@ -136,10 +137,10 @@ public class ArangobeeProfileTest {
 //    // then
 //    long changes = fakeMongoDatabase.getCollection(CHANGELOG_COLLECTION_NAME).count(new Document());
 //    assertEquals(0, changes);
-//  }
-//
-//  @Test
-//  public void shouldRunChangeSetsWhenNoEnv() throws Exception {
+  }
+
+  @Test
+  public void shouldRunChangeSetsWhenNoEnv() throws Exception {
 //    // given
 //    runner.setSpringEnvironment(null);
 //    runner.setChangeLogsScanPackage(AnotherMongobeeTestResource.class.getPackage().getName());
@@ -151,10 +152,10 @@ public class ArangobeeProfileTest {
 //    // then
 //    long changes = fakeMongoDatabase.getCollection(CHANGELOG_COLLECTION_NAME).count(new Document());
 //    assertEquals(CHANGELOG_COUNT, changes);
-//  }
-//
-//  @Test
-//  public void shouldRunChangeSetsWhenEmptyEnv() throws Exception {
+  }
+
+  @Test
+  public void shouldRunChangeSetsWhenEmptyEnv() throws Exception {
 //    // given
 //    runner.setSpringEnvironment(new EnvironmentMock());
 //    runner.setChangeLogsScanPackage(AnotherMongobeeTestResource.class.getPackage().getName());
@@ -166,10 +167,10 @@ public class ArangobeeProfileTest {
 //    // then
 //    long changes = fakeMongoDatabase.getCollection(CHANGELOG_COLLECTION_NAME).count(new Document());
 //    assertEquals(CHANGELOG_COUNT, changes);
-//  }
-//
-//  @Test
-//  public void shouldRunAllChangeSets() throws Exception {
+  }
+
+  @Test
+  public void shouldRunAllChangeSets() throws Exception {
 //    // given
 //    runner.setSpringEnvironment(new EnvironmentMock("dev"));
 //    runner.setChangeLogsScanPackage(AnotherMongobeeTestResource.class.getPackage().getName());
@@ -181,8 +182,8 @@ public class ArangobeeProfileTest {
 //    // then
 //    long changes = fakeMongoDatabase.getCollection(CHANGELOG_COLLECTION_NAME).count(new Document());
 //    assertEquals(CHANGELOG_COUNT, changes);
-//  }
-//
+  }
+
 //  @After
 //  public void cleanUp() {
 //    runner.setArangoTemplate(null);

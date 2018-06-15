@@ -1,11 +1,13 @@
 package com.github.arangobee;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.github.arangobee.dao.ChangeEntryDao;
 import com.github.arangobee.dao.ChangeEntryIndexDao;
+import com.github.arangobee.exception.ArangobeeConfigurationException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ArangobeeTest {
@@ -41,17 +43,17 @@ public class ArangobeeTest {
 //    runner.setEnabled(true);
 //    runner.setChangeLogsScanPackage(MongobeeTestResource.class.getPackage().getName());
 //  }
-//
-//  @Test(expected = MongobeeConfigurationException.class)
-//  public void shouldThrowAnExceptionIfNoDbNameSet() throws Exception {
+
+  @Test(expected = ArangobeeConfigurationException.class)
+  public void shouldThrowAnExceptionIfNoDbNameSet() throws Exception {
 //    Arangobee runner = new Arangobee(new MongoClientURI("mongodb://localhost:27017/"));
 //    runner.setEnabled(true);
 //    runner.setChangeLogsScanPackage(MongobeeTestResource.class.getPackage().getName());
 //    runner.execute();
-//  }
-//
-//  @Test
-//  public void shouldExecuteAllChangeSets() throws Exception {
+  }
+
+  @Test
+  public void shouldExecuteAllChangeSets() throws Exception {
 //    // given
 //    when(dao.acquireProcessLock()).thenReturn(true);
 //    when(dao.isNewChange(any(ChangeEntry.class))).thenReturn(true);
@@ -87,10 +89,10 @@ public class ArangobeeTest {
 //    long changeAll = fakeMongoDatabase.getCollection(CHANGELOG_COLLECTION_NAME).count(new Document()
 //        .append(ChangeEntry.KEY_AUTHOR, "testuser"));
 //    assertEquals(12, changeAll);
-//  }
-//
-//  @Test
-//  public void shouldPassOverChangeSets() throws Exception {
+  }
+
+  @Test
+  public void shouldPassOverChangeSets() throws Exception {
 //    // given
 //    when(dao.isNewChange(any(ChangeEntry.class))).thenReturn(false);
 //
@@ -99,10 +101,10 @@ public class ArangobeeTest {
 //
 //    // then
 //    verify(dao, times(0)).save(any(ChangeEntry.class)); // no changesets saved to dbchangelog
-//  }
-//
-//  @Test
-//  public void shouldUsePreConfiguredMongoTemplate() throws Exception {
+  }
+
+  @Test
+  public void shouldUsePreConfiguredMongoTemplate() throws Exception {
 //    MongoTemplate mt = mock(MongoTemplate.class);
 //    when(mt.getCollectionNames()).thenReturn(Collections.EMPTY_SET);
 //    when(dao.acquireProcessLock()).thenReturn(true);
@@ -110,20 +112,20 @@ public class ArangobeeTest {
 //    runner.setArangoTemplate(mt);
 //    runner.afterPropertiesSet();
 //    verify(mt).getCollectionNames();
-//  }
-//
-//  @Test
-//  public void shouldUsePreConfiguredJongo() throws Exception {
+  }
+
+  @Test
+  public void shouldUsePreConfiguredJongo() throws Exception {
 //    Jongo jongo = mock(Jongo.class);
 //    when(dao.acquireProcessLock()).thenReturn(true);
 //    when(jongo.getDatabase()).thenReturn(null);
 //    runner.setJongo(jongo);
 //    runner.afterPropertiesSet();
 //    verify(jongo).getDatabase();
-//  }
-//
-//  @Test
-//  public void shouldExecuteProcessWhenLockAcquired() throws Exception {
+  }
+
+  @Test
+  public void shouldExecuteProcessWhenLockAcquired() throws Exception {
 //    // given
 //    when(dao.acquireProcessLock()).thenReturn(true);
 //
@@ -132,10 +134,10 @@ public class ArangobeeTest {
 //
 //    // then
 //    verify(dao, atLeastOnce()).isNewChange(any(ChangeEntry.class));
-//  }
-//
-//  @Test
-//  public void shouldReleaseLockAfterWhenLockAcquired() throws Exception {
+  }
+
+  @Test
+  public void shouldReleaseLockAfterWhenLockAcquired() throws Exception {
 //    // given
 //    when(dao.acquireProcessLock()).thenReturn(true);
 //
@@ -144,10 +146,10 @@ public class ArangobeeTest {
 //
 //    // then
 //    verify(dao).releaseProcessLock();
-//  }
-//
-//  @Test
-//  public void shouldNotExecuteProcessWhenLockNotAcquired() throws Exception {
+  }
+
+  @Test
+  public void shouldNotExecuteProcessWhenLockNotAcquired() throws Exception {
 //    // given
 //    when(dao.acquireProcessLock()).thenReturn(false);
 //
@@ -156,10 +158,10 @@ public class ArangobeeTest {
 //
 //    // then
 //    verify(dao, never()).isNewChange(any(ChangeEntry.class));
-//  }
-//
-//  @Test
-//  public void shouldReturnExecutionStatusBasedOnDao() throws Exception {
+  }
+
+  @Test
+  public void shouldReturnExecutionStatusBasedOnDao() throws Exception {
 //    // given
 //    when(dao.isProccessLockHeld()).thenReturn(true);
 //
@@ -167,11 +169,11 @@ public class ArangobeeTest {
 //
 //    // then
 //    assertTrue(inProgress);
-//  }
-//
-//  @SuppressWarnings("unchecked")
-//  @Test
-//  public void shouldReleaseLockWhenExceptionInMigration() throws Exception {
+  }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void shouldReleaseLockWhenExceptionInMigration() throws Exception {
 //
 //    // given
 //    // would be nicer with a mock for the whole execution, but this would mean breaking out to separate class..
@@ -188,9 +190,9 @@ public class ArangobeeTest {
 //    }
 //    // then
 //    verify(dao).releaseProcessLock();
-//
-//  }
-//
+
+  }
+
 //  @After
 //  public void cleanUp() {
 //    runner.setArangoTemplate(null);
