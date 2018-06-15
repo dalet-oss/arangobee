@@ -11,7 +11,7 @@ import com.github.arangobee.dao.ChangeEntryIndexDao;
  * Created by lstolowski on 13.07.2017.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class AnrangobeeEnvTest {
+public class ArangobeeEnvTest {
   private static final String CHANGELOG_COLLECTION_NAME = "dbchangelog";
 
 //  @InjectMocks
