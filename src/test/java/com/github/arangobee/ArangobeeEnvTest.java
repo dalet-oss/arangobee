@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
 
 import com.arangodb.ArangoDB;
 import com.arangodb.ArangoDatabase;
@@ -36,6 +37,9 @@ public class ArangobeeEnvTest {
 
 	@Mock
 	private ChangeEntryIndexDao indexDao;
+	
+	@Mock
+	private ApplicationContext applicationContext;
 
 	private ArangoDatabase db;
 
@@ -47,10 +51,11 @@ public class ArangobeeEnvTest {
 	public void init() throws Exception {
 //		fakeDb = new Fongo("testServer").getDB("mongobeetest");
 //		fakeMongoDatabase = new Fongo("testServer").getDatabase("mongobeetest");
-		ArangoDB arangoDB = new ArangoDB.Builder().host("localhost", 8529).build();
-		arangoDB.createDatabase(DB_NAME);
+		ArangoDB arangoDB = new ArangoDB.Builder().host("localhost", 8529).user("root").password("password").build();
+		if(!arangoDB.db(DB_NAME).exists())
+			arangoDB.createDatabase(DB_NAME);
 		db = arangoDB.db(DB_NAME);
-		runner = new Arangobee(db);
+		runner = new Arangobee(db, applicationContext.getAutowireCapableBeanFactory());
 
 //		when(dao.connectDb(any(MongoClientURI.class), anyString()))
 //		.thenReturn(fakeMongoDatabase);

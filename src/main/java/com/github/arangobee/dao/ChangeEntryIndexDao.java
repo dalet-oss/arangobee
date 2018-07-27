@@ -12,20 +12,13 @@ import com.google.common.collect.ImmutableList;
  * @since 10.12.14
  */
 public class ChangeEntryIndexDao {
-
-//	private String changelogCollectionName;
-
 	public ChangeEntryIndexDao(String changelogCollectionName) {
 //		this.changelogCollectionName = changelogCollectionName;
 	}
 
 	public void createRequiredUniqueIndex(ArangoCollection collection) {
-//		BaseDocument doc = new BaseDocument();
-//		doc.addAttribute(ChangeEntry.KEY_CHANGEID, 1);
-//		doc.addAttribute(ChangeEntry.KEY_AUTHOR, 1);
 		collection.ensurePersistentIndex(ImmutableList.of(ChangeEntry.KEY_CHANGEID, ChangeEntry.KEY_AUTHOR),
 				new PersistentIndexOptions().unique(true)
-//				new IndexOptions().unique(true)
 				);
 	}
 
@@ -59,7 +52,6 @@ public class ChangeEntryIndexDao {
 	}
 
 	public void dropIndex(ArangoDatabase db, BaseDocument index) {
-//		collection.dropIndex(index.getAttribute("name").toString());
 		db.deleteIndex(index.getAttribute("name").toString());
 	}
 

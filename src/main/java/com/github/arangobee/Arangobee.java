@@ -9,6 +9,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.core.env.Environment;
 
 import com.arangodb.ArangoDatabase;
@@ -41,83 +42,29 @@ public class Arangobee implements InitializingBean {
 
   private boolean enabled = true;
   private String changeLogsScanPackage;
-//  private MongoClientURI mongoClientURI;
-//  private MongoClient mongoClient;
-//  private String dbName;
   private Environment springEnvironment;
 
   private final ArangoDatabase arangoDatabase;
-//  private Jongo jongo;
 
+  private final AutowireCapableBeanFactory autowireCapableBeanFactory;
 
-//  /**
-//   * <p>Simple constructor with default configuration of host (localhost) and port (27017). Although
-//   * <b>the database name need to be provided</b> using {@link Arangobee#setDbName(String)} setter.</p>
-//   * <p>It is recommended to use constructors with MongoURI</p>
-//   */
-//  public Arangobee() {
-//    this(new ArangoDClientURI("mongodb://" + defaultHost() + ":" + defaultPort() + "/"));
-//  }
-//
-//  /**
-//   * <p>Constructor takes db.mongodb.MongoClientURI object as a parameter.
-//   * </p><p>For more details about MongoClientURI please see com.mongodb.MongoClientURI docs
-//   * </p>
-//   *
-//   * @param mongoClientURI uri to your db
-//   * @see MongoClientURI
-//   */
-//  public Arangobee(MongoClientURI mongoClientURI) {
-//    this.mongoClientURI = mongoClientURI;
-//    this.setDbName(mongoClientURI.getDatabase());
-//    this.dao = new ChangeEntryDao(DEFAULT_CHANGELOG_COLLECTION_NAME, DEFAULT_LOCK_COLLECTION_NAME, DEFAULT_WAIT_FOR_LOCK,
-//        DEFAULT_CHANGE_LOG_LOCK_WAIT_TIME, DEFAULT_CHANGE_LOG_LOCK_POLL_RATE, DEFAULT_THROW_EXCEPTION_IF_CANNOT_OBTAIN_LOCK);
-//  }
-//
-//  /**
-//   * <p>Constructor takes db.mongodb.MongoClient object as a parameter.
-//   * </p><p>For more details about <tt>MongoClient</tt> please see com.mongodb.MongoClient docs
-//   * </p>
-//   *
-//   * @param mongoClient database connection client
-//   * @see MongoClient
-//   */
-//  public Arangobee(MongoClient mongoClient) {
-//    this.mongoClient = mongoClient;
-//    this.dao = new ChangeEntryDao(DEFAULT_CHANGELOG_COLLECTION_NAME, DEFAULT_LOCK_COLLECTION_NAME, DEFAULT_WAIT_FOR_LOCK,
-//        DEFAULT_CHANGE_LOG_LOCK_WAIT_TIME, DEFAULT_CHANGE_LOG_LOCK_POLL_RATE, DEFAULT_THROW_EXCEPTION_IF_CANNOT_OBTAIN_LOCK);
-//  }
-//
-//  /**
-//   * <p>Mongobee runner. Correct MongoDB URI should be provided.</p>
-//   * <p>The format of the URI is:
-//   * <pre>
-//   *   mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database[.collection]][?options]]
-//   * </pre>
-//   * <ul>
-//   * <li>{@code mongodb://} Required prefix</li>
-//   * <li>{@code username:password@} are optional.  If given, the driver will attempt to login to a database after
-//   * connecting to a database server. For some authentication mechanisms, only the username is specified and the password is not,
-//   * in which case the ":" after the username is left off as well.</li>
-//   * <li>{@code host1} Required.  It identifies a server address to connect to. More than one host can be provided.</li>
-//   * <li>{@code :portX} is optional and defaults to :27017 if not provided.</li>
-//   * <li>{@code /database} the name of the database to login to and thus is only relevant if the
-//   * {@code username:password@} syntax is used. If not specified the "admin" database will be used by default.
-//   * <b>Mongobee will operate on the database provided here or on the database overriden by setter setDbName(String).</b>
-//   * </li>
-//   * <li>{@code ?options} are connection options. For list of options please see com.mongodb.MongoClientURI docs</li>
-//   * </ul>
-//   * <p>For details, please see com.mongodb.MongoClientURI
-//   *
-//   * @param mongoURI with correct format
-//   * @see com.mongodb.MongoClientURI
-//   */
-//
-//  public Arangobee(String mongoURI) {
-//    this(new MongoClientURI(mongoURI));
-//  }
-  public Arangobee(ArangoDatabase arangoDatabase) {
+  private final int autowireMode;
+
+  private final boolean checkDependency;
+
+  public Arangobee(ArangoDatabase arangoDatabase, AutowireCapableBeanFactory autowireCapableBeanFactory) {
+	  this(arangoDatabase, autowireCapableBeanFactory, AutowireCapableBeanFactory.AUTOWIRE_NO);
+  }
+  
+  public Arangobee(ArangoDatabase arangoDatabase, AutowireCapableBeanFactory autowireCapableBeanFactory, int autowireMode) {
+	  this(arangoDatabase, autowireCapableBeanFactory, autowireMode, true);
+  }
+  
+  public Arangobee(ArangoDatabase arangoDatabase, AutowireCapableBeanFactory autowireCapableBeanFactory, int autowireMode, boolean checkDependency) {
 	this.arangoDatabase = arangoDatabase;
+	this.autowireCapableBeanFactory = autowireCapableBeanFactory;
+	this.autowireMode = autowireMode;
+	this.checkDependency = checkDependency;
 	this.dao = new ChangeEntryDao(DEFAULT_CHANGELOG_COLLECTION_NAME, DEFAULT_LOCK_COLLECTION_NAME, DEFAULT_WAIT_FOR_LOCK,
 			DEFAULT_CHANGE_LOG_LOCK_WAIT_TIME, DEFAULT_CHANGE_LOG_LOCK_POLL_RATE, DEFAULT_THROW_EXCEPTION_IF_CANNOT_OBTAIN_LOCK);
   }
@@ -146,11 +93,6 @@ public class Arangobee implements InitializingBean {
     validateConfig();
 
     dao.connectDb(this.arangoDatabase);
-//    if (this.mongoClient != null) {
-//      dao.connectMongoDb(this.mongoClient, dbName);
-//    } else {
-//      dao.connectMongoDb(this.mongoClientURI, dbName);
-//    }
 
     String lock = dao.acquireProcessLock();
 	if (lock==null) {
@@ -179,6 +121,7 @@ public class Arangobee implements InitializingBean {
       Object changelogInstance = null;
       try {
         changelogInstance = changelogClass.getConstructor().newInstance();
+        autowireCapableBeanFactory.autowireBeanProperties(changelogInstance, autowireMode, true);
         List<Method> changesetMethods = service.fetchChangeSets(changelogInstance.getClass());
 
         for (Method changesetMethod : changesetMethods) {
@@ -215,22 +158,6 @@ public class Arangobee implements InitializingBean {
 
   private Object executeChangeSetMethod(Method changeSetMethod, Object changeLogInstance, ArangoDatabase arangoDatabase)
       throws IllegalAccessException, InvocationTargetException, ArangobeeChangeSetException {
-//    if (changeSetMethod.getParameterTypes().length == 1
-//        && changeSetMethod.getParameterTypes()[0].equals(DB.class)) {
-//      logger.debug("method with DB argument");
-//
-//      return changeSetMethod.invoke(changeLogInstance, db);
-//    } else if (changeSetMethod.getParameterTypes().length == 1
-//        && changeSetMethod.getParameterTypes()[0].equals(Jongo.class)) {
-//      logger.debug("method with Jongo argument");
-//
-//      return changeSetMethod.invoke(changeLogInstance, jongo != null ? jongo : new Jongo(db));
-//    } else if (changeSetMethod.getParameterTypes().length == 1
-//        && changeSetMethod.getParameterTypes()[0].equals(MongoTemplate.class)) {
-//      logger.debug("method with MongoTemplate argument");
-//
-//      return changeSetMethod.invoke(changeLogInstance, arangoTemplate != null ? arangoTemplate : new MongoTemplate(db.getMongo(), dbName));
-//    } else 
 	  if (changeSetMethod.getParameterTypes().length == 2
         && changeSetMethod.getParameterTypes()[0].equals(ArangoTemplate.class)
         && changeSetMethod.getParameterTypes()[1].equals(Environment.class)) {
@@ -253,9 +180,6 @@ public class Arangobee implements InitializingBean {
   }
 
   private void validateConfig() throws ArangobeeConfigurationException {
-//    if (!hasText(dbName)) {
-//      throw new MongobeeConfigurationException("DB name is not set. It should be defined in MongoDB URI or via setter");
-//    }
     if (!hasText(changeLogsScanPackage)) {
       throw new ArangobeeConfigurationException("Scan package for changelogs is not set: use appropriate setter");
     }
@@ -268,28 +192,6 @@ public class Arangobee implements InitializingBean {
   public boolean isExecutionInProgress() throws ArangobeeConnectionException {
     return dao.isProccessLockHeld();
   }
-
-//  /**
-//   * Used DB name should be set here or via MongoDB URI (in a constructor)
-//   *
-//   * @param dbName database name
-//   * @return Mongobee object for fluent interface
-//   */
-//  public Arangobee setDbName(String dbName) {
-//    this.dbName = dbName;
-//    return this;
-//  }
-//
-//  /**
-//   * Sets uri to MongoDB
-//   *
-//   * @param mongoClientURI object with defined mongo uri
-//   * @return Mongobee object for fluent interface
-//   */
-//  public Arangobee setMongoClientURI(MongoClientURI mongoClientURI) {
-//    this.mongoClientURI = mongoClientURI;
-//    return this;
-//  }
 
   /**
    * Package name where @ChangeLog-annotated classes are kept.
@@ -374,28 +276,6 @@ public class Arangobee implements InitializingBean {
     this.springEnvironment = environment;
     return this;
   }
-
-  /**
-   * Sets pre-configured {@link MongoTemplate} instance to use by the Mongobee
-   *
-   * @param mongoTemplate instance of the {@link MongoTemplate}
-   * @return Mongobee object for fluent interface
-   */
-//  public Arangobee setArangoTemplate(ArangoDatabaseTemplate mongoTemplate) {
-//    this.arangoTemplate = mongoTemplate;
-//    return this;
-//  }
-
-//  /**
-//   * Sets pre-configured {@link MongoTemplate} instance to use by the Mongobee
-//   *
-//   * @param jongo {@link Jongo} instance
-//   * @return Mongobee object for fluent interface
-//   */
-//  public Arangobee setJongo(Jongo jongo) {
-//    this.jongo = jongo;
-//    return this;
-//  }
 
   /**
    * Overwrites a default mongobee changelog collection hardcoded in DEFAULT_CHANGELOG_COLLECTION_NAME.

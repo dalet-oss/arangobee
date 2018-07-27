@@ -44,12 +44,6 @@ public class ChangeEntry {
     return entry;
   }
 
-//  public String buildSearchQueryDBObject() {
-//    return new BaseDocument()
-//        .append(KEY_CHANGEID, this.changeId)
-//        .append(KEY_AUTHOR, this.author);
-//  }
-
   @Override
   public String toString() {
     return "[ChangeSet: id=" + this.changeId +

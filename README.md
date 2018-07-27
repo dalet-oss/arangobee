@@ -21,13 +21,13 @@ With Maven
 <dependency>
   <groupId>org.cmoine</groupId>
   <artifactId>arangobee</artifactId>
-  <version>0.14</version>
+  <version>0.15</version>
 </dependency>
 ```
 With Gradle
 ```groovy
 compile 'org.javassist:javassist:3.18.2-GA' // workaround for ${javassist.version} placeholder issue*
-compile 'com.github.arangobee:arangobee:0.14'
+compile 'com.github.arangobee:arangobee:0.15'
 ```
 
 ### Usage with Spring
@@ -142,3 +142,7 @@ public class ChangelogForTestEnv{
   } 
 }
 ```
+
+### Usage in the industry
+
+- The project has been first used for the product http://synaptyc.io/

@@ -48,13 +48,8 @@ public class LockDao {
     try {
       return arangoDatabase.collection(lockCollectionName).insertDocument(insertObj).getKey();
     } catch (ArangoDBException ex) {
-//      if (ex.getError().getCategory() == ErrorCategory.DUPLICATE_KEY) {
-//        logger.warn("Duplicate key exception while acquireLock. Probably the lock has been already acquired.");
-//      }
-//      return false;
     	return null;
     }
-//    return true;
   }
 
   public void releaseLock(ArangoDatabase arangoDatabase, String lock) {

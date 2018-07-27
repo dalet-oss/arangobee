@@ -42,10 +42,4 @@ public @interface ChangeSet {
    * @return should run always?
    */
   public boolean runAlways() default false;
-//
-//  /**
-//   * Executes the change the first time it is seen and each time the change set has been changed. <br/>
-//   * Optional (default is false)
-//   */
-//  public boolean runOnChange() default false;
 }

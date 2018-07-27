@@ -21,8 +21,6 @@ public class ChangeEntryDao {
 	private static final Logger logger = LoggerFactory.getLogger("Mongobee dao");
 
 	private ArangoDatabase arangoTemplate;
-	//  private DB db;  // only for Jongo driver compatibility - do not use in other contexts
-	//  private ArangoClient mongoClient;
 	private ChangeEntryIndexDao indexDao;
 	private String changelogCollectionName;
 	private boolean waitForLock;
@@ -47,39 +45,13 @@ public class ChangeEntryDao {
 		return arangoTemplate;
 	}
 
-	//  /**
-	//   * @deprecated implemented only for Jongo driver compatibility and backward compatibility - do not use in other contexts
-	//   * @return com.mongodb.DB
-	//   */
-	//  @Deprecated
-	//public DB getDb() {
-	//    return db;
-	//  }
-
 	public ArangoDatabase connectDb(ArangoDatabase arangoDatabase/* , String dbName*/) {
-//		if (!hasText(dbName)) {
-//			throw new MongobeeConfigurationException("DB name is not set. Should be defined in MongoDB URI or via setter");
-//		} else {
-
-			//      this.mongoClient = mongo;
-			//
-			//      db = mongo.getDB(dbName); // for Jongo driver and backward compatibility (constructor has required parameter Jongo(DB) )
-//			mongoDatabase = arangoTemplate..getDatabase(dbName);
 		this.arangoTemplate=arangoDatabase;
 
 		ensureChangeLogCollectionIndex(arangoDatabase, changelogCollectionName);
 		initializeLock();
 		return arangoDatabase;
-//		}
 	}
-
-//	public ArangoDatabase connectMongoDb(MongoClientURI mongoClientURI, String dbName)
-//			throws MongobeeConfigurationException, MongobeeConnectionException {
-//
-//		//    final MongoClient mongoClient = new MongoClient(mongoClientURI);
-//		final String database = (!hasText(dbName)) ? mongoClientURI.getDatabase() : dbName;
-//		return this.connectDb(mongoClient, database);
-//	}
 
 	/**
 	 * Try to acquire process lock
@@ -128,11 +100,6 @@ public class ChangeEntryDao {
 	public boolean isNewChange(ChangeEntry changeEntry) throws ArangobeeConnectionException {
 		verifyDbConnection();
 
-//		ArangoCollection mongobeeChangeLog = getMongoDatabase().collection(changelogCollectionName);
-//		Document entry = mongobeeChangeLog.find(changeEntry.buildSearchQueryDBObject()).first();
-//		return entry == null;
-//		.append(KEY_CHANGEID, this.changeId)
-//      .append(KEY_AUTHOR, this.author);
 		return !getArangoDatabase().query(
 				"FOR t IN " + changelogCollectionName + " FILTER t." + ChangeEntry.KEY_CHANGEID + " == @"
 						+ ChangeEntry.KEY_CHANGEID + " && t." + ChangeEntry.KEY_AUTHOR + " == @" + ChangeEntry.KEY_AUTHOR
@@ -161,23 +128,11 @@ public class ChangeEntryDao {
 		if(!collection.exists()) {
 			arangoTemplate.createCollection(collectionName);
 		}
-//		BaseDocument index = indexDao.findRequiredChangeAndAuthorIndex(arangoTemplate);
-//		if (index == null) {
 		indexDao.createRequiredUniqueIndex(collection);
-//			logger.debug("Index in collection " + changelogCollectionName + " was created");
-//		} else if (!indexDao.isUnique(index)) {
-//			db.inde
-//			indexDao.dropIndex(collection, index);
-//			db.deleteIndex(id);
-//			indexDao.createRequiredUniqueIndex(collection);
-//			logger.debug("Index in collection " + changelogCollectionName + " was recreated");
-//		}
-
 	}
 
 	public void close() {
-//		arangoTemplate.ends
-//		this.mongoClient.close();
+		// NO-OP
 	}
 
 	private void initializeLock() {
@@ -194,7 +149,6 @@ public class ChangeEntryDao {
 	}
 
 	public void setChangelogCollectionName(String changelogCollectionName) {
-//		this.indexDao.setChangelogCollectionName(changelogCollectionName);
 		this.changelogCollectionName = changelogCollectionName;
 	}
 
