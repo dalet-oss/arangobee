@@ -145,4 +145,4 @@ public class ChangelogForTestEnv{
 
 ### Usage in the industry
 
-- The project has been first used for the product http://synaptyc.io/
+This project has been first used for Synaptyc (https://www.synaptyc.io), the first SaaS service to monitor, manage and market all your digital data exchange services, whatever the technology is (API, EDI, WebServices...).
