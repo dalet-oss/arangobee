@@ -9,9 +9,9 @@ import com.github.arangobee.changeset.ChangeSet;
  */
 @ChangeLog
 public class SpringDataChangelog {
-  @ChangeSet(author = "abelski", id = "spring_test4", order = "04")
-  public void testChangeSet(ArangoTemplate mongoTemplate) {
-    System.out.println("invoked  with mongoTemplate=" + mongoTemplate.toString());
-//    System.out.println("invoked  with mongoTemplate=" + mongoTemplate.getCollectionNames());
-  }
+    @ChangeSet(author="abelski", id="spring_test4", order="04")
+    public void testChangeSet(ArangoTemplate mongoTemplate) {
+        System.out.println("invoked  with mongoTemplate=" + mongoTemplate.toString());
+        //    System.out.println("invoked  with mongoTemplate=" + mongoTemplate.getCollectionNames());
+    }
 }

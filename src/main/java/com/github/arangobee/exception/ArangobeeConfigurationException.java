@@ -5,7 +5,7 @@ package com.github.arangobee.exception;
  * @since 01.08.14
  */
 public class ArangobeeConfigurationException extends ArangobeeException {
-  public ArangobeeConfigurationException(String message) {
-    super(message);
-  }
+    public ArangobeeConfigurationException(String message) {
+        super(message);
+    }
 }

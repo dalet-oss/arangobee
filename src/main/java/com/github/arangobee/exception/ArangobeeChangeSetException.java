@@ -5,7 +5,7 @@ package com.github.arangobee.exception;
  * @since 27/07/2014
  */
 public class ArangobeeChangeSetException extends ArangobeeException {
-  public ArangobeeChangeSetException(String message) {
-    super(message);
-  }
+    public ArangobeeChangeSetException(String message) {
+        super(message);
+    }
 }

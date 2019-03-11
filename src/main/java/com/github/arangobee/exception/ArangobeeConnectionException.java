@@ -7,7 +7,7 @@ package com.github.arangobee.exception;
  * @since 27/07/2014
  */
 public class ArangobeeConnectionException extends ArangobeeException {
-  public ArangobeeConnectionException(String message, Exception baseException) {
-    super(message, baseException);
-  }
+    public ArangobeeConnectionException(String message, Exception baseException) {
+        super(message, baseException);
+    }
 }
