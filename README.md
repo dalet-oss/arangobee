@@ -19,7 +19,7 @@ The goal is to keep this tool simple and comfortable to use.
 With Maven
 ```xml
 <dependency>
-  <groupId>org.cmoine</groupId>
+  <groupId>io.github.cmoine</groupId>
   <artifactId>arangobee</artifactId>
   <version>0.17</version>
 </dependency>
