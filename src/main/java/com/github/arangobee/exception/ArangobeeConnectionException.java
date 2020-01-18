@@ -1,7 +1,7 @@
 package com.github.arangobee.exception;
 
 /**
- * Error while connection to MongoDB
+ * Error while connection to ArangoDB
  *
  * @author lstolowski
  * @since 27/07/2014

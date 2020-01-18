@@ -1,6 +1,7 @@
 package com.github.arangobee.utils;
 
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
@@ -27,10 +28,13 @@ public class ChangeServiceTest {
         // given
         String scanPackage=AnrangobeeTestResource.class.getPackage().getName();
         ChangeService service=new ChangeService(scanPackage);
+
         // when
         List<Class<?>> foundClasses=service.fetchChangeLogs();
+
         // then
-        assertTrue(foundClasses != null && foundClasses.size() > 0);
+        assertNotNull(foundClasses);
+        assertTrue(foundClasses.size() > 0);
     }
 
     @Test
@@ -43,7 +47,7 @@ public class ChangeServiceTest {
         List<Method> foundMethods=service.fetchChangeSets(AnrangobeeTestResource.class);
 
         // then
-        assertTrue(foundMethods != null);
+        assertNotNull(foundMethods);
         assertEquals(3, foundMethods.size());
     }
 
@@ -57,7 +61,7 @@ public class ChangeServiceTest {
         List<Method> foundMethods=service.fetchChangeSets(AnotherArangobeeTestResource.class);
 
         // then
-        assertTrue(foundMethods != null);
+        assertNotNull(foundMethods);
         assertEquals(3, foundMethods.size());
     }
 
@@ -69,6 +73,7 @@ public class ChangeServiceTest {
 
         // when
         List<Method> foundMethods=service.fetchChangeSets(AnotherArangobeeTestResource.class);
+
         // then
         for (Method foundMethod : foundMethods) {
             if (foundMethod.getName().equals("testChangeSetWithAlways")) {
@@ -81,14 +86,12 @@ public class ChangeServiceTest {
 
     @Test
     public void shouldCreateEntry() throws ArangobeeChangeSetException {
-
         // given
         String scanPackage=AnrangobeeTestResource.class.getPackage().getName();
         ChangeService service=new ChangeService(scanPackage);
         List<Method> foundMethods=service.fetchChangeSets(AnrangobeeTestResource.class);
 
         for (Method foundMethod : foundMethods) {
-
             // when
             ChangeEntry entry=service.createChangeEntry(foundMethod);
 

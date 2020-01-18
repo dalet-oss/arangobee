@@ -4,7 +4,7 @@
 ---
 
 
-**arangobee** is a Java tool which helps you to *manage changes* in your MongoDB and *synchronize* them with your application.
+**arangobee** is a Java tool which helps you to *manage changes* in your ArangoDB and *synchronize* them with your application.
 The concept is very similar to other db migration tools such as [Liquibase](http://www.liquibase.org) or [Flyway](http://flywaydb.org) but *without using XML/JSON/YML files*.
 
 The goal is to keep this tool simple and comfortable to use.
@@ -78,7 +78,7 @@ ChangeLogs are sorted alphabetically by `order` argument and changesets are appl
 
 #### @ChangeSet
 
-Method annotated by @ChangeSet is taken and applied to the database. History of applied change sets is stored in a collection called `dbchangelog` (by default) in your MongoDB
+Method annotated by @ChangeSet is taken and applied to the database. History of applied change sets is stored in a collection called `dbchangelog` (by default) in your ArangoDB
 
 ##### Annotation parameters:
 
@@ -99,7 +99,7 @@ public void someChange1() {
    // method without arguments can do some non-db changes
 }
 
-@ChangeSet(order = "002", id = "someChangeWithMongoDatabase", author = "testAuthor")
+@ChangeSet(order = "002", id = "someChangeWithArangoDatabase", author = "testAuthor")
 public void someChange2(ArangoDatabase db) {
   // type: com.arangodb.ArangoDatabase, operations allowed by driver are possible
   // example: 
@@ -114,7 +114,7 @@ public void someChange2(ArangoDatabase db) {
 public void someChange3(ArangoDatabase db, Environment environment) {
   // type: com.arangodb.ArangoDatabase
   // type: org.springframework.core.env.Environment
-  // Spring Data integration allows using MongoTemplate and Environment in the ChangeSet
+  // Spring Data integration allows using ArangoTemplate and Environment in the ChangeSet
 }
 ```
 

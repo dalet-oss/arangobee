@@ -158,7 +158,7 @@ public class Arangobee implements InitializingBean {
             throws IllegalAccessException, InvocationTargetException, ArangobeeChangeSetException {
         if (changeSetMethod.getParameterTypes().length == 2 && changeSetMethod.getParameterTypes()[0].equals(ArangoTemplate.class)
                 && changeSetMethod.getParameterTypes()[1].equals(Environment.class)) {
-            logger.debug("method with MongoTemplate and environment arguments");
+            logger.debug("method with ArangoTemplate and environment arguments");
 
             return changeSetMethod.invoke(changeLogInstance, arangoDatabase, springEnvironment);
         } else if (changeSetMethod.getParameterTypes().length == 1 && changeSetMethod.getParameterTypes()[0].equals(ArangoDatabase.class)) {
@@ -280,7 +280,7 @@ public class Arangobee implements InitializingBean {
      * Overwrites a default Arangobee changelog collection hardcoded in DEFAULT_CHANGELOG_COLLECTION_NAME.
      *
      * CAUTION! Use this method carefully - when changing the name on a existing system,
-     * your changelogs will be executed again on your MongoDB instance
+     * your changelogs will be executed again on your ArangoDB instance
      *
      * @param changelogCollectionName a new changelog collection name
      * @return Arangobee object for fluent interface
@@ -302,7 +302,7 @@ public class Arangobee implements InitializingBean {
     }
 
     /**
-     * Closes the Mongo instance used by Arangobee.
+     * Closes the Arango instance used by Arangobee.
      * This will close either the connection Arangobee was initiated with or that which was internally created.
      */
     public void close() {
