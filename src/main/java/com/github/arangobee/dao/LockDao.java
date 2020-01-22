@@ -29,7 +29,7 @@ public class LockDao {
     private void createCollectionAndUniqueIndexIfNotExists(ArangoDatabase arangoDatabase) {
         //	  BaseDocument indexKeys = new BaseDocument();
         //	  indexKeys.addAttribute(KEY_PROP_NAME, INDEX_SORT_ASC);
-        //    IndexOptions indexOptions = new IndexOptions().unique(true).name("mongobeelock_key_idx");
+        //    IndexOptions indexOptions = new IndexOptions().unique(true).name("arangobeelock_key_idx");
         ArangoCollection collection=arangoDatabase.collection(lockCollectionName);
         if (!collection.exists())
             arangoDatabase.createCollection(lockCollectionName);

@@ -5,7 +5,7 @@ package com.github.arangobee.dao;
  * @since 13.01.15
  */
 public class LockDaoTest {
-
+    // @TODO: write test for ArangoDB
     //  private static final String TEST_SERVER = "testServer";
     //  private static final String DB_NAME = "mongobeetest";
     //  private static final String LOCK_COLLECTION_NAME = "mongobeelock";

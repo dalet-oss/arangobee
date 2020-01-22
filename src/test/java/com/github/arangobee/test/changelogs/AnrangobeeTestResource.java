@@ -13,7 +13,6 @@ public class AnrangobeeTestResource {
     @ChangeSet(author="testuser", id="test1", order="01")
     public void testChangeSet() {
         System.out.println("invoked 1");
-
     }
 
     @ChangeSet(author="testuser", id="test2", order="02")

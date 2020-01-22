@@ -5,6 +5,7 @@ package com.github.arangobee.dao;
  * @since 10.12.14
  */
 public class ChangeEntryIndexDaoTest {
+    // @TODO: write test for ArangoDB
     //  private static final String TEST_SERVER = "testServer";
     //  private static final String DB_NAME = "mongobeetest";
     //  private static final String CHANGEID_AUTHOR_INDEX_NAME = "changeId_1_author_1";

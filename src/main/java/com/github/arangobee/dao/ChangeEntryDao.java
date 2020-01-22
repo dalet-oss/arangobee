@@ -116,7 +116,7 @@ public class ChangeEntryDao {
 
     private void verifyDbConnection() throws ArangobeeConnectionException {
         if (getArangoDatabase() == null) {
-            throw new ArangobeeConnectionException("Database is not connected. Mongobee has thrown an unexpected error", new NullPointerException());
+            throw new ArangobeeConnectionException("Database is not connected. Arangobee has thrown an unexpected error", new NullPointerException());
         }
     }
 

@@ -22,8 +22,8 @@ public class AnotherArangobeeTestResource {
     }
 
     @ChangeSet(author="testuser", id="Btest6", order="06")
-    public void testChangeSet6(ArangoDatabase mongoDatabase) {
-        System.out.println("invoked B6 with db=" + mongoDatabase.toString());
+    public void testChangeSet6(ArangoDatabase arangoDatabase) {
+        System.out.println("invoked B6 with db=" + arangoDatabase.toString());
     }
 
 }
