@@ -1,17 +1,16 @@
 package com.github.arangobee.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-
-import java.lang.reflect.Method;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.github.arangobee.changeset.ChangeEntry;
 import com.github.arangobee.exception.ArangobeeChangeSetException;
 import com.github.arangobee.test.changelogs.AnotherArangobeeTestResource;
 import com.github.arangobee.test.changelogs.AnrangobeeTestResource;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Method;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 /**
@@ -101,11 +100,13 @@ public class ChangeServiceTest {
         }
     }
 
-    @Test(expected=ArangobeeChangeSetException.class)
-    public void shouldFailOnDuplicatedChangeSets() throws ArangobeeChangeSetException {
-        String scanPackage=ChangeLogWithDuplicate.class.getPackage().getName();
-        ChangeService service=new ChangeService(scanPackage);
-        service.fetchChangeSets(ChangeLogWithDuplicate.class);
+    @Test
+    public void shouldFailOnDuplicatedChangeSets() {
+        String scanPackage = ChangeLogWithDuplicate.class.getPackage().getName();
+        ChangeService service = new ChangeService(scanPackage);
+
+        assertThatThrownBy(() -> service.fetchChangeSets(ChangeLogWithDuplicate.class))
+            .isInstanceOf(ArangobeeChangeSetException.class);
     }
 
 }

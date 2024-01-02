@@ -1,11 +1,12 @@
 package com.github.arangobee;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +31,7 @@ import com.github.arangobee.dao.ChangeEntryIndexDao;
 import com.github.arangobee.exception.ArangobeeConnectionException;
 import com.github.arangobee.exception.ArangobeeLockException;
 
+
 public class AbstractArangobeeTest {
     protected static final String FAKE_LOCK="fakeLock";
 
@@ -48,39 +50,33 @@ public class AbstractArangobeeTest {
 
     @Mock
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
-    
+
     private final List<BaseDocument> list=new ArrayList<>();
 
     private Environment environmentMock;
 
     public void before() throws ArangobeeConnectionException, ArangobeeLockException {
         runner=new Arangobee(fakeArangoDatabase, autowireCapableBeanFactory).dao(dao);
-        when(dao.connectDb(any(ArangoDatabase.class))).thenReturn(fakeArangoDatabase);
-        when(dao.getArangoDatabase()).thenReturn(fakeArangoDatabase);
-        ArangoCollection mockColletion=mock(ArangoCollection.class);
+        lenient().when(dao.connectDb(any())).thenReturn(fakeArangoDatabase);
+        lenient().when(dao.getArangoDatabase()).thenReturn(fakeArangoDatabase);
+        ArangoCollection mockCollection=mock(ArangoCollection.class);
         list.clear();
-        when(mockColletion.insertDocument(any())).then(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                list.add((BaseDocument) invocation.getArguments()[0]);
-                return mock(DocumentCreateEntity.class);
-            }
+        lenient().when(mockCollection.insertDocument(any())).then((Answer) invocation -> {
+            list.add((BaseDocument) invocation.getArguments()[0]);
+            return mock(DocumentCreateEntity.class);
         });
-        when(fakeArangoDatabase.collection(anyString())).thenReturn(mockColletion);
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                Object o=invocation.getArguments()[0];
-                for(Field field: o.getClass().getDeclaredFields()) {
-                    if(Environment.class.isAssignableFrom(field.getType()) && field.getAnnotation(Autowired.class)!=null) {
-                        field.setAccessible(true);
-                        field.set(o, environmentMock);
-                    }
+        lenient().when(fakeArangoDatabase.collection(anyString())).thenReturn(mockCollection);
+        lenient().doAnswer(invocation -> {
+            Object o=invocation.getArguments()[0];
+            for(Field field: o.getClass().getDeclaredFields()) {
+                if(Environment.class.isAssignableFrom(field.getType()) && field.getAnnotation(Autowired.class)!=null) {
+                    field.setAccessible(true);
+                    field.set(o, environmentMock);
                 }
-                return null;
             }
+            return null;
         }).when(autowireCapableBeanFactory).autowireBeanProperties(any(), anyInt(), anyBoolean());
-        doCallRealMethod().when(dao).save(any(ChangeEntry.class));
+        lenient().doCallRealMethod().when(dao).save(any(ChangeEntry.class));
         doCallRealMethod().when(dao).setChangelogCollectionName(anyString());
         doCallRealMethod().when(dao).setIndexDao(any(ChangeEntryIndexDao.class));
         dao.setIndexDao(indexDao);
@@ -94,7 +90,7 @@ public class AbstractArangobeeTest {
         runner.setSpringEnvironment(environmentMock);
 //        autowireCapableBeanFactory.autowireBean(environmentMock);
     }
-    
+
     protected long count(String changeId, String author) {
         long count=0;
         for(BaseDocument doc: list) {

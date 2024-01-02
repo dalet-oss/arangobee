@@ -1,39 +1,43 @@
 package com.github.arangobee;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import com.github.arangobee.changeset.ChangeEntry;
 import com.github.arangobee.exception.ArangobeeConfigurationException;
 import com.github.arangobee.exception.ArangobeeConnectionException;
 import com.github.arangobee.exception.ArangobeeException;
 import com.github.arangobee.exception.ArangobeeLockException;
 import com.github.arangobee.test.changelogs.AnrangobeeTestResource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+
+@ExtendWith(MockitoExtension.class)
 public class ArangobeeTest extends AbstractArangobeeTest {
-    @Before
+
+    @BeforeEach
     @Override
     public void before() throws ArangobeeConnectionException, ArangobeeLockException {
         super.before();
         runner.setChangeLogsScanPackage(AnrangobeeTestResource.class.getPackage().getName());
-        when(dao.acquireProcessLock()).thenReturn(FAKE_LOCK);
+        lenient().when(dao.acquireProcessLock()).thenReturn(FAKE_LOCK);
     }
 
-    @Test(expected=ArangobeeConfigurationException.class)
-    public void shouldThrowAnExceptionIfNoDbSet() throws Exception {
-        new Arangobee(null, null).execute();
+    @Test()
+    public void shouldThrowAnExceptionIfNoDbSet() {
+        assertThatThrownBy(() -> new Arangobee(null, null).execute())
+            .isInstanceOf(ArangobeeConfigurationException.class);
     }
 
     @Test
@@ -46,7 +50,7 @@ public class ArangobeeTest extends AbstractArangobeeTest {
 
         // then
         verify(dao, times(6)).save(any(ChangeEntry.class));
-        
+
         // dbchangelog collection checking
         assertEquals(1, count("test1", "testuser"));
         assertEquals(1, count("test2", "testuser"));
@@ -90,13 +94,14 @@ public class ArangobeeTest extends AbstractArangobeeTest {
         verify(dao).releaseProcessLock(FAKE_LOCK);
     }
 
-    @Test(expected=ArangobeeException.class)
-    public void shouldNotExecuteProcessWhenLockNotAcquired() throws Exception {
+    @Test
+    public void shouldNotExecuteProcessWhenLockNotAcquired() throws ArangobeeConnectionException, ArangobeeLockException {
         // given
         when(dao.acquireProcessLock()).thenReturn(null);
 
         // when
-        runner.execute();
+        assertThatThrownBy(() -> runner.execute())
+            .isInstanceOf(ArangobeeException.class);
 
         // then
         verify(dao, never()).isNewChange(any(ChangeEntry.class));
@@ -113,7 +118,6 @@ public class ArangobeeTest extends AbstractArangobeeTest {
         assertTrue(inProgress);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void shouldReleaseLockWhenExceptionInMigration() throws Exception {
         // given

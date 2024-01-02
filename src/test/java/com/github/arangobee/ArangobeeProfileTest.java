@@ -1,14 +1,5 @@
 package com.github.arangobee;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import com.github.arangobee.changeset.ChangeEntry;
 import com.github.arangobee.exception.ArangobeeConnectionException;
 import com.github.arangobee.exception.ArangobeeLockException;
@@ -16,6 +7,15 @@ import com.github.arangobee.resources.EnvironmentMock;
 import com.github.arangobee.test.changelogs.AnotherArangobeeTestResource;
 import com.github.arangobee.test.profiles.def.UnProfiledChangeLog;
 import com.github.arangobee.test.profiles.dev.ProfiledDevChangeLog;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 
 /**
  * Tests for Spring profiles integration
@@ -23,11 +23,11 @@ import com.github.arangobee.test.profiles.dev.ProfiledDevChangeLog;
  * @author lstolowski
  * @since 2014-09-17
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ArangobeeProfileTest extends AbstractArangobeeTest {
     public static final int CHANGELOG_COUNT=6;
 
-    @Before
+    @BeforeEach
     @Override
     public void before() throws ArangobeeConnectionException, ArangobeeLockException {
         super.before();
@@ -79,7 +79,6 @@ public class ArangobeeProfileTest extends AbstractArangobeeTest {
         // given
         setSpringEnvironment(new EnvironmentMock("foobar"));
         runner.setChangeLogsScanPackage(ProfiledDevChangeLog.class.getPackage().getName());
-        when(dao.isNewChange(any(ChangeEntry.class))).thenReturn(true);
 
         // when
         runner.execute();
