@@ -1,8 +1,7 @@
-![arangobee](https://raw.githubusercontent.com/cmoine/arangobee/master/misc/arangobee_min.png)
+![arangobee](https://raw.githubusercontent.com/dalet-oss/arangobee/master/misc/arangobee_min.png)
 
-[![Build Status](https://travis-ci.org/cmoine/arangobee.svg?branch=master)](https://travis-ci.org/cmoine/arangobee) [![Coverity Scan Build Status](https://scan.coverity.com/projects/2721/badge.svg)](https://scan.coverity.com/projects/2721) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cmoine/arangobee/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.cmoine/arangobee) [![Licence](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/cmoine/arangobee/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/dalet-oss/arangobee.svg?branch=master)](https://travis-ci.org/dalet-oss/arangobee) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/arangobee/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/arangobee) [![Licence](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/dalet-oss/arangobee/blob/master/LICENSE)
 ---
-
 
 **arangobee** is a Java tool which helps you to *manage changes* in your ArangoDB and *synchronize* them with your application.
 The concept is very similar to other db migration tools such as [Liquibase](http://www.liquibase.org) or [Flyway](http://flywaydb.org) but *without using XML/JSON/YML files*.
@@ -12,6 +11,34 @@ The goal is to keep this tool simple and comfortable to use.
 
 **arangobee** provides new approach for adding changes (change sets) based on Java classes and methods with appropriate annotations.
 
+
+## Origins
+
+The code in this repo was originally derived from https://github.com/kervinpierre/vfs-azure.  That repo is clearly no
+longer being maintained (at the time of writing, no changes in 5 years, no issue page available, and contributed PRs
+have been ignored).
+
+We have made a number of changes and continue to develop this repo.  To simplify processes such as PRs etc, we now
+maintain this not as a fork of the original project but as a project in its own right.
+
+
+## Builds, releases etc.
+
+This project is built using Travis CI.
+[![Build Status](https://app.travis-ci.com/dalet-oss/arangobee.svg?branch=master)](https://app.travis-ci.com/dalet-oss/arangobee)
+
+Published artifacts are available on Maven Central as `com.github.dalet-oss:arangobee`.
+
+For the latest version, see https://github.com/dalet-oss/arangobee/tags.
+
+#### Note for maintainers:
+
+-  Every push to master gets built, but not published
+-  To publish artifacts, it is necessary to specify a version number by adding an appropriate Git tag to `HEAD` with an
+   appropriate prefix.  For example, tagging HEAD with `release/1.3.8` will cause version `1.3.8` to be published on
+   the next build.
+
+
 ## Getting started
 
 ### Add a dependency
@@ -19,7 +46,7 @@ The goal is to keep this tool simple and comfortable to use.
 With Maven
 ```xml
 <dependency>
-  <groupId>io.github.cmoine</groupId>
+  <groupId>io.github.dalet-oss</groupId>
   <artifactId>arangobee</artifactId>
   <version>0.17</version>
 </dependency>

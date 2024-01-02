@@ -1,20 +1,24 @@
 language: java
-dist: trusty
+os: linux
+jdk: openjdk8
 
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "fuBBUxTGk3ZgMKvNPaHQpfU49DCYUmEto7+E4rerTOQ8pnh1yUp0Nkl6pJ2q2eyM9/3kTxHL95gTFysxEE6VxlJu2bbjeNVTh/6AT6wUq8lCMeSMobNxUkrqc0ZCDaoxJ6uUVh+tNswaZqeG/Wa2IulCztI6ZRtkgjTzZu0rS4HXrN4Er5ZbmyyRQEvvupkYBeELDjkcFkwfZVUSxqB662Onr8wLo5NAsfteYNLT8uUKtkXBQbcP5k5KYhuv1Dt8anrSY00pa1MyMAgDFlsN+iGzA+n+DUG0LmweGfTwcTn231VVG4hKkxxRx1S3wFKMZFlOJasgkbMBkAhP2BqcC3tRNPjGZS+C0IvwiyN9DzYo7UPL4vizFZBL5kbNthSgDONpdBYRUuV+XTHL2fV6Hci6tL4jeJTy/Ff4fII0SHzbO+aGqv7vOl8ut3gO+FBlJolow/qfARCiX76p5tI2D5zyQuT1T94KaZiaHUyamgm81BVb2xQXUJh1h2e5Z4RkadD+qBntInmqK7uHEtD7cQB+373vZawyqUk1DCKF758PM0OCYtBu9cuintG6fWg3ikD6Zg0vyhEVkbFh8uCSqbP3S8adk+iVdpJhnHnh4OuJDXsazHoiUk/CHVvOOgMHj2mGFKAUrYWPKpTmbAcn60tfstwRG+SmyN1FIgLIKTE="
+branches:
+  only:
+    - master
 
-before_install:
+deploy:
+  provider: script
+  script: 'cp .travis.settings.xml $HOME/.m2/settings.xml && ./publish.sh'
+  skip_cleanup: true
+  on:
+    branch: master
 
-addons:
-  coverity_scan:
-    project:
-      name: "cmoine/arangobee"
-      description: "Build submitted via Travis CI"
-    notification_email: christophe.moine@free.fr
-    build_command_prepend: "mvn clean"
-    build_command:   "mvn -DskipTests=true compile"
-    branch_pattern: master
+notifications:
+  email:
+    recipients:
+      - lspiteri@dalet.com
+      - nsmith@dalet.com
+      - olockwood@dalet.com
+    on_success: change
+    on_failure: always
+
