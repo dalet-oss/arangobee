@@ -27,6 +27,7 @@ else
 
   # Decrypt the gpg key used for signing
   echo 'Decrypting the GPG key used for signing'
+  echo "Username: ${SONATYPE_USERNAME}"
   echo "Key: ${SONATYPE_GPGKEY_FILE_ENCRYPTION_KEY}"
   echo "IV: ${SONATYPE_GPGKEY_FILE_ENCRYPTION_IV}"
   openssl aes-256-cbc -K ${SONATYPE_GPGKEY_FILE_ENCRYPTION_KEY} -iv ${SONATYPE_GPGKEY_FILE_ENCRYPTION_IV} -in secret.gpg.enc -out secret.gpg -d

@@ -36,3 +36,6 @@ jobs:
 
       - name: Publish to Maven Central
         run: ./publish.sh
+        env:
+          SONATYPE_GPGKEY_FILE_ENCRYPTION_IV: ${{ secrets.SONATYPE_GPGKEY_FILE_ENCRYPTION_IV }}
+          SONATYPE_USERNAME: ${{ vars.SONATYPE_USERNAME }}
