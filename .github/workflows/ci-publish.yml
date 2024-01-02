@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  compile-and-test:
+  compile-test-and-publish-to-maven-central:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

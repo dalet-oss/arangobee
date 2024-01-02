@@ -24,7 +24,7 @@ then
   echo 'Version already available on Maven Central.  This must be a rebuild; nothing to do here.'
 else
   # Decrypt the gpg key used for signing
-  openssl aes-256-cbc -K $encrypted_a559f7c88919_key -iv $encrypted_a559f7c88919_iv -in secret.gpg.enc -out secret.gpg -d
+  openssl aes-256-cbc -K ${SONATYPE_GPGKEY_FILE_ENCRYPTION_KEY} -iv ${SONATYPE_GPGKEY_FILE_ENCRYPTION_IV} -in secret.gpg.enc -out secret.gpg -d
   export GPG_TTY=$(tty)
 
   # Work around some nonsense on the specific version of GPG that comes with Ubuntu - see https://www.fluidkeys.com/tweak-gpg-2.1.11/
