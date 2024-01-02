@@ -1,8 +1,6 @@
 package com.github.arangobee.utils;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Method;
@@ -15,7 +13,6 @@ import com.github.arangobee.exception.ArangobeeChangeSetException;
 import com.github.arangobee.test.changelogs.AnotherArangobeeTestResource;
 import com.github.arangobee.test.changelogs.AnrangobeeTestResource;
 
-import junit.framework.Assert;
 
 /**
  * @author lstolowski
@@ -33,8 +30,8 @@ public class ChangeServiceTest {
         List<Class<?>> foundClasses=service.fetchChangeLogs();
 
         // then
-        assertNotNull(foundClasses);
-        assertTrue(foundClasses.size() > 0);
+        assertThat(foundClasses).isNotNull();
+        assertThat(foundClasses).hasSizeGreaterThan(0);
     }
 
     @Test
@@ -47,8 +44,8 @@ public class ChangeServiceTest {
         List<Method> foundMethods=service.fetchChangeSets(AnrangobeeTestResource.class);
 
         // then
-        assertNotNull(foundMethods);
-        assertEquals(3, foundMethods.size());
+        assertThat(foundMethods).isNotNull();
+        assertThat(foundMethods).hasSize(3);
     }
 
     @Test
@@ -61,8 +58,8 @@ public class ChangeServiceTest {
         List<Method> foundMethods=service.fetchChangeSets(AnotherArangobeeTestResource.class);
 
         // then
-        assertNotNull(foundMethods);
-        assertEquals(3, foundMethods.size());
+        assertThat(foundMethods).isNotNull();
+        assertThat(foundMethods).hasSize(3);
     }
 
     @Test
@@ -77,9 +74,9 @@ public class ChangeServiceTest {
         // then
         for (Method foundMethod : foundMethods) {
             if (foundMethod.getName().equals("testChangeSetWithAlways")) {
-                assertTrue(service.isRunAlwaysChangeSet(foundMethod));
+                assertThat(service.isRunAlwaysChangeSet(foundMethod)).isTrue();
             } else {
-                assertFalse(service.isRunAlwaysChangeSet(foundMethod));
+                assertThat(service.isRunAlwaysChangeSet(foundMethod)).isFalse();
             }
         }
     }
@@ -96,11 +93,11 @@ public class ChangeServiceTest {
             ChangeEntry entry=service.createChangeEntry(foundMethod);
 
             // then
-            Assert.assertEquals("testuser", entry.getAuthor());
-            Assert.assertEquals(AnrangobeeTestResource.class.getName(), entry.getChangeLogClass());
-            Assert.assertNotNull(entry.getTimestamp());
-            Assert.assertNotNull(entry.getChangeId());
-            Assert.assertNotNull(entry.getChangeSetMethodName());
+            assertThat(entry.getAuthor()).isEqualTo("testuser");
+            assertThat(entry.getChangeLogClass()).isEqualTo(AnrangobeeTestResource.class.getName());
+            assertThat(entry.getTimestamp()).isNotNull();
+            assertThat(entry.getChangeId()).isNotNull();
+            assertThat(entry.getChangeSetMethodName()).isNotNull();
         }
     }
 
