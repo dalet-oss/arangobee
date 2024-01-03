@@ -63,7 +63,7 @@ public class AbstractArangobeeTest {
         list.clear();
         lenient().when(mockCollection.insertDocument(any())).then((Answer) invocation -> {
             list.add((BaseDocument) invocation.getArguments()[0]);
-            return mock(DocumentCreateEntity.class);
+            return new DocumentCreateEntity();
         });
         lenient().when(fakeArangoDatabase.collection(anyString())).thenReturn(mockCollection);
         lenient().doAnswer(invocation -> {

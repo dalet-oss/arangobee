@@ -46,11 +46,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
 
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <spring.version>4.0.6.RELEASE</spring.version>
+        <spring.version>6.0.12</spring.version>
 
         <revision>DEV</revision>
     </properties>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>com.arangodb</groupId>
             <artifactId>arangodb-spring-data</artifactId>
-            <version>3.2.1</version>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>

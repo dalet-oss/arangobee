@@ -102,9 +102,9 @@ public class ChangeEntryDao {
 
         return !getArangoDatabase().query(
                 "FOR t IN " + changelogCollectionName + " FILTER t." + ChangeEntry.KEY_CHANGEID + " == @" + ChangeEntry.KEY_CHANGEID + " && t."
-                        + ChangeEntry.KEY_AUTHOR + " == @" + ChangeEntry.KEY_AUTHOR + " RETURN t",
-                ImmutableMap.<String, Object> of(ChangeEntry.KEY_CHANGEID, changeEntry.getChangeId(), ChangeEntry.KEY_AUTHOR, changeEntry.getAuthor()), null,
-                BaseDocument.class).hasNext();
+                        + ChangeEntry.KEY_AUTHOR + " == @" + ChangeEntry.KEY_AUTHOR + " RETURN t", BaseDocument.class,
+                ImmutableMap.<String, Object> of(ChangeEntry.KEY_CHANGEID, changeEntry.getChangeId(), ChangeEntry.KEY_AUTHOR, changeEntry.getAuthor()), null
+                ).hasNext();
     }
 
     public void save(ChangeEntry changeEntry) throws ArangobeeConnectionException {
