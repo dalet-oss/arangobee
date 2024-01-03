@@ -1,6 +1,6 @@
 ![arangobee](https://raw.githubusercontent.com/dalet-oss/arangobee/master/misc/arangobee_min.png)
 
-[![Build Status](https://travis-ci.org/dalet-oss/arangobee.svg?branch=master)](https://travis-ci.org/dalet-oss/arangobee) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/arangobee/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/arangobee) [![Licence](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/dalet-oss/arangobee/blob/master/LICENSE)
+[![CI Build](https://github.com/dalet-oss/arangobee/actions/workflows/ci-build.yml/badge.svg)](https://github.com/dalet-oss/arangobee/actions/workflows/ci-build.yml) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/arangobee/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.dalet-oss/arangobee) [![Licence](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/dalet-oss/arangobee/blob/master/LICENSE)
 ---
 
 **arangobee** is a Java tool which helps you to *manage changes* in your ArangoDB and *synchronize* them with your application.
@@ -14,9 +14,9 @@ The goal is to keep this tool simple and comfortable to use.
 
 ## Origins
 
-The code in this repo was originally derived from https://github.com/kervinpierre/vfs-azure.  That repo is clearly no
-longer being maintained (at the time of writing, no changes in 5 years, no issue page available, and contributed PRs
-have been ignored).
+The code in this repo was originally derived from https://github.com/cmoine/arangobee.  That repo is clearly no longer
+being maintained (at the time of writing, no changes in 5 years, no issue page available, and contributed PRs have been
+ignored).
 
 We have made a number of changes and continue to develop this repo.  To simplify processes such as PRs etc, we now
 maintain this not as a fork of the original project but as a project in its own right.
@@ -24,8 +24,12 @@ maintain this not as a fork of the original project but as a project in its own 
 
 ## Builds, releases etc.
 
-This project is built using Travis CI.
-[![Build Status](https://app.travis-ci.com/dalet-oss/arangobee.svg?branch=master)](https://app.travis-ci.com/dalet-oss/arangobee)
+This project is built using Github Actions.
+
+-  All pushes to the `master` branch trigger the [![CI Build](https://github.com/dalet-oss/arangobee/actions/workflows/ci-build.yml/badge.svg)](https://github.com/dalet-oss/arangobee/actions/workflows/ci-build.yml)
+   workflow.
+-  All pushes of Git tags matching `release/*` trigger the [![CI Publish to Maven Central](https://github.com/dalet-oss/arangobee/actions/workflows/ci-publish.yml/badge.svg?branch=master&event=push)](https://github.com/dalet-oss/arangobee/actions/workflows/ci-publish.yml)
+   workflow.
 
 Published artifacts are available on Maven Central as `com.github.dalet-oss:arangobee`.
 
@@ -48,13 +52,12 @@ With Maven
 <dependency>
   <groupId>io.github.dalet-oss</groupId>
   <artifactId>arangobee</artifactId>
-  <version>0.17</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 With Gradle
 ```groovy
-compile 'org.javassist:javassist:3.18.2-GA' // workaround for ${javassist.version} placeholder issue*
-compile 'com.github.arangobee:arangobee:0.17'
+compile 'com.github.arangobee:arangobee:1.0.0'
 ```
 
 ### Usage with Spring
@@ -169,7 +172,3 @@ public class ChangelogForTestEnv{
   } 
 }
 ```
-
-### Usage in the industry
-
-This project has been first used for Synaptyc (https://www.synaptyc.io), the first SaaS service to monitor, manage and market all your digital data exchange services, whatever the technology is (API, EDI, WebServices...).
