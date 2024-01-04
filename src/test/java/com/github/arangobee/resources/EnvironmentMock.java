@@ -1,6 +1,8 @@
 package com.github.arangobee.resources;
 
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
+
 
 /**
  * Mock for Spring environment
@@ -29,6 +31,11 @@ public class EnvironmentMock implements Environment {
     public boolean acceptsProfiles(String... strings) {
         return false;
     }
+    
+    @Override
+    public boolean acceptsProfiles(Profiles profiles) {
+        return false;
+    }
 
     @Override
     public boolean containsProperty(String s) {
@@ -55,10 +62,6 @@ public class EnvironmentMock implements Environment {
         return null;
     }
 
-    @Override
-    public <T> Class<T> getPropertyAsClass(String s, Class<T> tClass) {
-        return null;
-    }
 
     @Override
     public String getRequiredProperty(String s) throws IllegalStateException {
