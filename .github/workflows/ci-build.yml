@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - master-springboot2
   pull_request:
     types: [ opened, reopened, edited ]
     branches:
