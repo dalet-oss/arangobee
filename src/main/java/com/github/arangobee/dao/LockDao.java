@@ -4,6 +4,8 @@ import com.arangodb.ArangoCollection;
 import com.arangodb.ArangoDBException;
 import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.BaseDocument;
+import com.arangodb.model.CollectionCreateOptions;
+
 
 /**
  * @author colsson11
@@ -30,9 +32,12 @@ public class LockDao {
         //	  BaseDocument indexKeys = new BaseDocument();
         //	  indexKeys.addAttribute(KEY_PROP_NAME, INDEX_SORT_ASC);
         //    IndexOptions indexOptions = new IndexOptions().unique(true).name("arangobeelock_key_idx");
-        ArangoCollection collection=arangoDatabase.collection(lockCollectionName);
-        if (!collection.exists())
-            arangoDatabase.createCollection(lockCollectionName);
+        ArangoCollection collection = arangoDatabase.collection(lockCollectionName);
+        if (!collection.exists()) {
+            CollectionCreateOptions collectionCreateOptions = new CollectionCreateOptions();
+            collectionCreateOptions.replicationFactor(2);
+            arangoDatabase.createCollection(lockCollectionName, collectionCreateOptions);
+        }
         //	  collection.ensurePersistentIndex(ImmutableList.of(KEY_PROP_NAME), new PersistentIndexOptions().unique(true));
     }
 
