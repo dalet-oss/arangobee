@@ -2,6 +2,7 @@ package com.github.arangobee.dao;
 
 import java.util.Date;
 
+import com.arangodb.model.CollectionCreateOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,10 +121,13 @@ public class ChangeEntryDao {
         }
     }
 
-    private void ensureChangeLogCollectionIndex(ArangoDatabase arangoTemplate, String collectionName) {
-        ArangoCollection collection=arangoTemplate.collection(collectionName);
+    private void ensureChangeLogCollectionIndex(ArangoDatabase arangoDatabase, String collectionName) {
+
+        ArangoCollection collection = arangoDatabase.collection(collectionName);
         if (!collection.exists()) {
-            arangoTemplate.createCollection(collectionName);
+            CollectionCreateOptions collectionCreateOptions = new CollectionCreateOptions();
+            collectionCreateOptions.replicationFactor(2);
+            arangoDatabase.createCollection(collectionName, collectionCreateOptions);
         }
         indexDao.createRequiredUniqueIndex(collection);
     }
